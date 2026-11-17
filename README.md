@@ -1,21 +1,31 @@
-## TemplateDevEnv
-_For Kotlin see [TemplateDevEnvKt](https://github.com/CleanroomMC/TemplateDevEnvKt)_
+A mod that backports the new throwing discs to 1.12.2.
 
-Template workspace for modding Minecraft 1.12.2. Licensed under MIT, it is made for public use.
+I'll try to update it when Mojang will release the official snapshots to make it as similar as possible.
 
-This template runs on **Java 25**, **Gradle 9.7.0** + **[RetroFuturaGradle](https://github.com/GTNewHorizons/RetroFuturaGradle) 2.0.3** + **Forge 14.23.5.2847**.
+THROWING DISCS:
 
-With **coremod and mixin support** that is easy to configure.
+Materials: Iron, Gold and Diamond;
 
-### Instructions:
+Creative Mode Tab: Throwing discs are situated in the Combat creative tab.
 
-1. Click `use this template` at the top.
-2. Clone the repository that you have created with this template to your local machine.
-3. Make sure IDEA is using Java 25 for Gradle before you sync the project. Verify this by going to IDEA's `Settings > Build, Execution, Deployment > Build Tools > Gradle > Gradle JVM`.
-4. Open the project folder in IDEA. When prompted, click "Load Gradle Project" as it detects the `build.gradle`, if you weren't prompted, right-click the project's `build.gradle` in IDEA, select `Link Gradle Project`, after completion, hit `Refresh All` in the gradle tab on the right.
-5. Run gradle tasks such as `runClient` and `runServer` in the IDEA gradle tab, or use the auto-imported run configurations like `1. Run Client`.
+Features: You can throw the throwing disc by right clicking while having them in your main hand or off hand, after throwing discs the item will have a cooldown until the disc projectile comes back to the player;
 
-### Notes:
-- Dependencies script in [gradle/scripts/dependencies.gradle](gradle/scripts/dependencies.gradle), explanations are commented in the file.
-- Publishing script in [gradle/scripts/publishing.gradle](gradle/scripts/publishing.gradle).
-- When writing Mixins on IntelliJ, it is advisable to use latest [MinecraftDev Fork for RetroFuturaGradle](https://github.com/eigenraven/MinecraftDev/releases).
+Enchantments: Sharpness, Smite, Bane of Arthropods, Flame, Punch, Unbreaking and Mending;
+
+Damage: 1.5 for every material in hand, 4 for iron, 3 for gold and 6 for diamond when thrown (enchantment boosts excluded);
+
+Projectile: The throwing disc will fly for 1 second before coming back to the player and the flight duration extends by 0.5 seconds for every bounce until the disc has bounced 5 times. The throwing disc projectile will pierce through entities and damage them both when it's flying and when it's returning to the player. When the disc comes back to the player it ignores collisions.
+
+Dispensers: Dispensers will also be able to shoot throwing discs and they will function exactly like when the player throws them execpt for their returning, they will instantly die when they finish their time without coming back to the dispenser.
+
+RECIPES:
+
+Crafting: You can craft throwing discs with 4 iron ingots, gold ingots or diamonds placed in a diamond shape, you can also repair discs by putting 2 of them in the crafting grid, they will lose their enchantments like any other tool;
+
+Smelting: You can smelt iron and gold throwing discs and recieve the respective nuggets;
+
+Anvil: You can repair throwing discs with their respective material like every other tool and you can use enchanted books to enchant discs.
+
+ADVANCEMENTS:
+
+Monsters' Diamond Disc: It's a parent of the vanilla "Monster Hunter" advancement and it's unlocked by killing a mob by throwing a diamond throwing disc.
