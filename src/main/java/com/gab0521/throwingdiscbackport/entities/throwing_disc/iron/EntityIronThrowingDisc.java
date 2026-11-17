@@ -1,0 +1,409 @@
+package com.gab0521.throwingdiscbackport.entities.throwing_disc.iron;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.monster.EntityCaveSpider;
+import net.minecraft.entity.monster.EntityEndermite;
+import net.minecraft.entity.monster.EntitySilverfish;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.*;
+import net.minecraft.world.World;
+
+public class EntityIronThrowingDisc extends EntityThrowable implements IProjectile {
+    private double damage;
+    private double smite_damage;
+    private double bane_damage;
+    private int xTile;
+    private int yTile;
+    private int zTile;
+    private float timesbounced;
+    private int flyingticks;
+    private boolean isReturning;
+    private boolean isFire;
+    private Item sourceItem;
+    private ItemStack sourceItemStack;
+    private int knockbackStrength;
+    private boolean hasSharpness;
+    private EntityLivingBase discThrower;
+
+    public EntityIronThrowingDisc(World worldIn) {
+        super(worldIn);
+
+    }
+    public EntityIronThrowingDisc(World worldIn, EntityLivingBase throwerIn)
+    {
+        super(worldIn, throwerIn);
+        this.setSize(0.8F, 0.1F);
+
+    }
+
+    public EntityIronThrowingDisc(World worldIn, double x, double y, double z)
+    {
+        super(worldIn, x, y, z);
+        this.setSize(0.8F, 0.1F);
+
+    }
+
+    @Override
+    protected void entityInit() {
+
+        this.setSize(0.8F, 0.1F);
+        setTimesBounced(0);
+        setFlyingTicks(20);
+        this.isReturning = false;
+        this.isFire = false;
+        this.hasSharpness = false;
+        this.setDamage(4.0F);
+        this.setSmite_damage(4.0F);
+        this.setBane_damage(4.0F);
+
+    }
+
+    public void writeEntityToNBT(NBTTagCompound compound)
+    {
+        compound.setInteger("xTile", this.xTile);
+        compound.setInteger("yTile", this.yTile);
+        compound.setInteger("zTile", this.zTile);
+        compound.setDouble("damage", this.damage);
+        compound.setFloat("timesBounced", this.timesbounced);
+        compound.setInteger("flyingTicks", this.flyingticks);
+        compound.setBoolean("isReturning", this.isReturning);
+        compound.setBoolean("isFire", this.isFire);
+    }
+
+    public void readEntityFromNBT(NBTTagCompound compound)
+    {
+        this.xTile = compound.getInteger("xTile");
+        this.yTile = compound.getInteger("yTile");
+        this.zTile = compound.getInteger("zTile");
+        this.timesbounced = compound.getInteger("timesBounced");
+        this.flyingticks = compound.getInteger("flyingTicks");
+        this.isReturning = compound.getBoolean("isReturning");
+        this.isFire = compound.getBoolean("isFire");
+
+        if (compound.hasKey("damage", 99))
+        {
+            this.damage = compound.getDouble("damage");
+        }
+    }
+
+    @Override
+    protected void onImpact(RayTraceResult result) {
+        if (!this.world.isRemote) {
+            if (thrower != null) {
+                if (result.entityHit != thrower && result.entityHit instanceof EntityLivingBase) {
+                    if (this.hasSharpness) {
+                        if (((EntityLivingBase) result.entityHit).isEntityUndead()) {
+                            result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), (float) this.damage);
+                        }
+                        else if (result.entityHit instanceof EntitySpider || result.entityHit instanceof EntityCaveSpider || result.entityHit instanceof EntitySilverfish || result.entityHit instanceof EntityEndermite) {
+                            result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), (float) this.damage);
+                        }
+                        else {
+                            result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), (float) this.damage);
+                        }
+                    }
+                    else {
+                        if (((EntityLivingBase) result.entityHit).isEntityUndead()) {
+                            result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), (float) this.smite_damage);
+                        }
+                        else if (result.entityHit instanceof EntitySpider || result.entityHit instanceof EntityCaveSpider || result.entityHit instanceof EntitySilverfish || result.entityHit instanceof EntityEndermite) {
+                            result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), (float) this.bane_damage);
+                        }
+                        else {
+                            result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), (float) this.damage);
+                        }
+                    }
+                    EnchantmentHelper.applyThornEnchantments((EntityLivingBase) result.entityHit, this.thrower);
+                    if (this.knockbackStrength > 0)
+                    {
+                        float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+                        if (f1 > 0.0F)
+                        {
+                            result.entityHit.addVelocity(this.motionX * (double)this.knockbackStrength * 0.6000000238418579D / (double)f1, 0.1D, this.motionZ * (double)this.knockbackStrength * 0.6000000238418579D / (double)f1);
+                        }
+                    }
+                    if (this.isFire) {
+                        result.entityHit.setFire(100);
+                    }
+                    this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_ARROW_HIT, SoundCategory.NEUTRAL, 0.5F, 0.4F);
+                }
+            }
+            else {
+                if (this.hasSharpness) {
+                    if (((EntityLivingBase) result.entityHit).isEntityUndead()) {
+                        result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, null), (float) this.damage);
+                    }
+                    else if (result.entityHit instanceof EntitySpider || result.entityHit instanceof EntityCaveSpider || result.entityHit instanceof EntitySilverfish || result.entityHit instanceof EntityEndermite) {
+                        result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, null), (float) this.damage);
+                    }
+                    else {
+                        result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, null), (float) this.damage);
+                    }
+                }
+                else {
+                    if (((EntityLivingBase) result.entityHit).isEntityUndead()) {
+                        result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, null), (float) this.smite_damage);
+                    }
+                    else if (result.entityHit instanceof EntitySpider || result.entityHit instanceof EntityCaveSpider || result.entityHit instanceof EntitySilverfish || result.entityHit instanceof EntityEndermite) {
+                        result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, null), (float) this.bane_damage);
+                    }
+                    else {
+                        result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, null), (float) this.damage);
+                    }
+                }
+                if (this.knockbackStrength > 0)
+                {
+                    float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+
+                    if (f1 > 0.0F)
+                    {
+                        result.entityHit.addVelocity(this.motionX * (double)this.knockbackStrength * 0.6000000238418579D / (double)f1, 0.1D, this.motionZ * (double)this.knockbackStrength * 0.6000000238418579D / (double)f1);
+                    }
+                }
+                if (this.isFire) {
+                    result.entityHit.setFire(100);
+                }
+                this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_ARROW_HIT, SoundCategory.NEUTRAL, 0.5F, 0.4F);
+            }
+        }
+    }
+
+    @Override
+    public void onUpdate() {
+        if (!this.world.isRemote ) {
+            EntityLivingBase thrower = this.getThrower();
+            if (thrower != null) {
+                if (thrower.isDead || thrower.dimension != this.dimension) {
+                    if (thrower instanceof EntityPlayer) {
+                        EntityPlayer player = (EntityPlayer) this.getThrower();
+                        if (this.sourceItem != null) {
+                            player.getCooldownTracker().removeCooldown(sourceItem);
+                        }
+                    }
+                    this.setDead();
+                    super.onUpdate();
+                    return;
+                }}
+            if (thrower == null) {
+                if (flyingticks <= 0) {
+                    this.setDead();
+                    super.onUpdate();
+                    return;
+                }
+            }
+
+            if (!this.isReturning) {
+                if (flyingticks <= 0) {
+                    this.motionX = 0;
+                    this.motionY = 0;
+                    this.motionZ = 0;
+                    this.isReturning = true;
+                } else {
+                    flyingticks--;
+                }
+                Vec3d vec3d = new Vec3d(this.posX, this.posY, this.posZ);
+                Vec3d vec3d1 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+                RayTraceResult rayTraceResult = this.world.rayTraceBlocks(vec3d, vec3d1);
+                if (rayTraceResult != null && rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
+
+                    BlockPos blockPos = rayTraceResult.getBlockPos();
+
+                    if (this.world.getBlockState(blockPos).getCollisionBoundingBox(this.world, blockPos) == Block.NULL_AABB) {
+                        return;
+                    }
+
+                    EnumFacing facing = rayTraceResult.sideHit;
+                    timesbounced += 1;
+                    if (this.timesbounced < 5) {
+                        setFlyingTicks(getFlyingTicks() + 10);
+                    }
+                    switch (facing) {
+                        case UP:
+                        case DOWN:
+                            this.motionY = -this.motionY;
+                            break;
+                        case NORTH:
+                        case SOUTH:
+                            this.motionZ = -this.motionZ;
+                            break;
+                        case EAST:
+                        case WEST:
+                            this.motionX = -this.motionX;
+                            break;
+                        default:
+                            break;
+                    }
+                    this.world.playSound((EntityPlayer)null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F);
+                    this.velocityChanged = true;
+                }
+            }
+            if (this.isReturning && this.getThrower() instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) this.getThrower();
+                returnToPlayer(player);
+            }
+        }
+        super.onUpdate();
+    }
+
+    public void returnToPlayer(EntityPlayer player) {
+        double disx = player.posX - this.posX;
+        double disy = (player.posY + (double)player.getEyeHeight()) - this.posY;
+        double disz = player.posZ - this.posZ;
+        double disSquare = disx * disx + disy * disy + disz * disz;
+        if (disSquare <= 4.0D) {
+            if (this.sourceItem != null) {
+                player.getCooldownTracker().removeCooldown(sourceItem);
+            }
+            this.world.playSound((EntityPlayer)null, thrower.posX, thrower.posY, thrower.posZ, SoundEvents.ENTITY_ARROW_HIT_PLAYER, SoundCategory.NEUTRAL, 0.5F, 0.4F);
+            this.setDead();
+        }
+        else {
+            double factor = 0.5D / Math.sqrt(disSquare);
+            this.motionX = factor * disx;
+            this.motionY = factor * disy;
+            this.motionZ = factor * disz;
+        }
+    }
+
+    @Override
+    protected float getGravityVelocity() {
+        return 0.0F;
+    }
+
+    @Override
+    public boolean handleWaterMovement() {
+        return false;
+    }
+
+    protected boolean canTriggerWalking()
+    {
+        return false;
+    }
+
+    public void setDamage(double damageIn)
+    {
+        this.damage = damageIn;
+    }
+
+    public double getDamage()
+    {
+        return this.damage;
+    }
+
+    public void setBane_damage(double damageIn)
+    {
+        this.bane_damage = damageIn;
+    }
+
+    public double getBane_damage()
+    {
+        return this.bane_damage;
+    }
+
+    public void setSmite_damage(double damageIn)
+    {
+        this.smite_damage = damageIn;
+    }
+
+    public double getSmite_damage()
+    {
+        return this.smite_damage;
+    }
+
+    public void setTimesBounced(float bouncedIn)
+    {
+        this.timesbounced = bouncedIn;
+    }
+
+    public float getTimesbounced()
+    {
+        return this.timesbounced;
+    }
+
+    public void setFlyingTicks(int flyingticksIn)
+    {
+        this.flyingticks = flyingticksIn;
+    }
+
+    public int getFlyingTicks()
+    {
+        return this.flyingticks;
+    }
+
+    public void setSourceItem(Item sourceItem) {
+        this.sourceItem = sourceItem;
+    }
+
+    public Item getSourceItem() {
+        return this.sourceItem;
+    }
+
+    public void setKnockbackStrength(int knockbackStrengthIn)
+    {
+        this.knockbackStrength = knockbackStrengthIn;
+    }
+
+    public boolean canBeAttackedWithItem()
+    {
+        return false;
+    }
+
+    public float getEyeHeight()
+    {
+        return 0.0F;
+    }
+
+    public void setSourceItemStack(ItemStack stack)
+    {
+        this.sourceItemStack = stack;
+
+        if (!this.sourceItemStack.isEmpty() && this.sourceItemStack.isItemEnchanted()) {
+            int sharpness = EnchantmentHelper.getEnchantmentLevel(Enchantments.SHARPNESS, stack);
+            int smite = EnchantmentHelper.getEnchantmentLevel(Enchantments.SMITE, stack);
+            int bane_of_arthropods = EnchantmentHelper.getEnchantmentLevel(Enchantments.BANE_OF_ARTHROPODS, stack);
+            int punch = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
+
+            if (sharpness > 0)
+            {
+                this.hasSharpness = true;
+                this.setDamage(this.getDamage() + (double)sharpness * 0.5D + 0.5D);
+            }
+
+            if (smite > 0)
+            {
+                this.setSmite_damage(this.getSmite_damage() + (double)smite * 2.5D);
+            }
+
+            if (bane_of_arthropods > 0)
+            {
+                this.setBane_damage(this.getBane_damage() + (double)bane_of_arthropods * 2.5D);
+            }
+
+            if (punch > 0)
+            {
+                this.setKnockbackStrength(punch);
+            }
+
+            if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0)
+            {
+                this.isFire = true;
+                this.setFire(100);
+            }
+        }
+    }
+}

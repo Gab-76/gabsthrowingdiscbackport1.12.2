@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "throwingdiscbackport:items/gold_throwing_disc"
+  }
+}
