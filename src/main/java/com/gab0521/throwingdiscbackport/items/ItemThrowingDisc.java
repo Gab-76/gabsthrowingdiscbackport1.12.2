@@ -1,9 +1,8 @@
 package com.gab0521.throwingdiscbackport.items;
 
 import com.gab0521.throwingdiscbackport.ThrowingDiscBackport;
-import com.gab0521.throwingdiscbackport.entities.throwing_disc.diamond.EntityDiamondThrowingDisc;
-import com.gab0521.throwingdiscbackport.entities.throwing_disc.gold.EntityGoldThrowingDisc;
-import com.gab0521.throwingdiscbackport.entities.throwing_disc.iron.EntityIronThrowingDisc;
+import com.gab0521.throwingdiscbackport.config.ModConfig;
+import com.gab0521.throwingdiscbackport.entities.throwing_disc.EntityThrowingDisc;
 import com.gab0521.throwingdiscbackport.init.ModItems;
 import com.gab0521.throwingdiscbackport.util.IHasModel;
 import com.google.common.collect.Multimap;
@@ -33,25 +32,38 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemThrowingDisc extends Item implements IHasModel {
     private final float attackDamage;
-    private final Item.ToolMaterial material;
     private final float attackSpeed;
+    private final int enchantability;
+    private final double damageThrown;
+    private final float speed;
+    private final int maxBounces;
+    private final int floatingTime;
+    private final String material;
+    private final String fullitemname;
 
-    public ItemThrowingDisc(Item.ToolMaterial material, String name)
+    public ItemThrowingDisc(String name, String material, int enchantability, float damage, float damageThrown, float rechargeTime ,int durability, float speed, int maxBounces, int floatingTime, String fullitemname)
     {
         setUnlocalizedName(name);
         setRegistryName(name);
-        this.material = material;
         this.maxStackSize = 1;
-        this.setMaxDamage(material.getMaxUses());
+        this.setMaxDamage(durability);
         this.setCreativeTab(CreativeTabs.COMBAT);
-        this.attackDamage = 1.5F;
-        this.attackSpeed = -3.0F;
+        this.attackDamage = damage;
+        this.attackSpeed = rechargeTime;
+        this.enchantability = enchantability;
+        this.damageThrown = (double)damageThrown;
+        this.speed = speed;
+        this.maxBounces = maxBounces;
+        this.floatingTime = floatingTime;
+        this.material = material;
+        this.fullitemname = fullitemname;
         ModItems.ITEMS.add(this);
+        ModItems.DISCS_MAP.put(this.material.toUpperCase()+"_THROWING_DISC", this);
     }
 
     public float getAttackDamage()
     {
-        return this.material.getAttackDamage();
+        return this.attackDamage;
     }
 
     public float getDestroySpeed(ItemStack stack, IBlockState state)
@@ -72,42 +84,30 @@ public class ItemThrowingDisc extends Item implements IHasModel {
         Vec3d lookvec = playerIn.getLookVec();
 
         worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-        playerIn.getCooldownTracker().setCooldown(this, 999999999);
 
         if (!worldIn.isRemote)
         {
-            int var = 0;
+            ItemStack discStack = itemstack.copy();
+            EntityThrowingDisc entityThrowingDisc = new EntityThrowingDisc(worldIn, playerIn);
 
-            if (this.material == ToolMaterial.GOLD) {
-                var = 1;
-            }
-            if (this.material == ToolMaterial.DIAMOND) {
-                var = 2;
-            }
-            ItemStack discStack = itemstack;
-            switch (var) {
-                case 1:
-                    EntityGoldThrowingDisc entitydiscgold = new EntityGoldThrowingDisc(worldIn, playerIn);
-                    entitydiscgold.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 0.5F, 0.5F);
-                    entitydiscgold.setSourceItem(this);
-                    entitydiscgold.setSourceItemStack(discStack);
-                    worldIn.spawnEntity(entitydiscgold);
-                    break;
-                case 2:
-                    EntityDiamondThrowingDisc entitydiscdiamond = new EntityDiamondThrowingDisc(worldIn, playerIn);
-                    entitydiscdiamond.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 0.5F, 0.5F);
-                    entitydiscdiamond.setSourceItem(this);
-                    entitydiscdiamond.setSourceItemStack(discStack);
-                    worldIn.spawnEntity(entitydiscdiamond);
-                    break;
-                default:
-                    EntityIronThrowingDisc entitydisciron = new EntityIronThrowingDisc(worldIn, playerIn);
-                    entitydisciron.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 0.5F, 0.5F);
-                    entitydisciron.setSourceItem(this);
-                    entitydisciron.setSourceItemStack(discStack);
-                    worldIn.spawnEntity(entitydisciron);
-                    break;
-            }
+            entityThrowingDisc.setDamage(this.damageThrown);
+            entityThrowingDisc.setBane_damage(this.damageThrown);
+            entityThrowingDisc.setSmite_damage(this.damageThrown);
+            entityThrowingDisc.setVariant(this.material);
+            entityThrowingDisc.setFlyingTicks(this.floatingTime);
+            entityThrowingDisc.setMaxBounces(this.maxBounces);
+            entityThrowingDisc.setSpeed(this.speed);
+            entityThrowingDisc.setPlayerUUID(playerIn.getUniqueID());
+
+            entityThrowingDisc.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, this.speed, 0.5F);
+            entityThrowingDisc.setSourceItem(this);
+            entityThrowingDisc.setSourceItemStack(discStack);
+            worldIn.spawnEntity(entityThrowingDisc);
+        }
+
+        if (!playerIn.capabilities.isCreativeMode)
+        {
+            itemstack.shrink(1);
         }
 
         playerIn.addStat(StatList.getObjectUseStats(this));
@@ -156,13 +156,34 @@ public class ItemThrowingDisc extends Item implements IHasModel {
 
     public int getItemEnchantability()
     {
-        return this.material.getEnchantability();
+        return this.enchantability;
+    }
+
+    public double getDamageThrown() {
+        return this.damageThrown;
+    }
+
+    public String getMaterial() {
+        return this.material;
+    }
+
+    public int getMaxBounces() {
+        return this.maxBounces;
+    }
+
+    public int getFloatingTime() {
+        return this.floatingTime;
+    }
+
+    public float getSpeed() {
+        return this.speed;
     }
 
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
-        ItemStack mat = this.material.getRepairItemStack();
-        if (!mat.isEmpty() && net.minecraftforge.oredict.OreDictionary.itemMatches(mat, repair, false)) return true;
+        if (repair.getItem() == Item.getByNameOrId(this.fullitemname) || repair.getItem() == this) {
+            return true;
+        }
         return super.getIsRepairable(toRepair, repair);
     }
 
@@ -179,9 +200,6 @@ public class ItemThrowingDisc extends Item implements IHasModel {
         return multimap;
     }
 
-    public ToolMaterial getMaterial() {
-        return this.material;
-    }
 
     @Override
     public void registerModels() {

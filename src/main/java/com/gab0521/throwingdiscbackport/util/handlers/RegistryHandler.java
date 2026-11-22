@@ -1,11 +1,12 @@
 package com.gab0521.throwingdiscbackport.util.handlers;
 
 
-import com.gab0521.throwingdiscbackport.events.DiamondDiscDispenser;
-import com.gab0521.throwingdiscbackport.events.GoldDiscDispenser;
-import com.gab0521.throwingdiscbackport.events.IronDiscDispenser;
+import com.gab0521.throwingdiscbackport.config.CustomDiscAttributes;
+import com.gab0521.throwingdiscbackport.events.DiscDispenser;
+import com.gab0521.throwingdiscbackport.events.DiscRecipesEvent;
 import com.gab0521.throwingdiscbackport.init.ModEntities;
 import com.gab0521.throwingdiscbackport.recipes.SmeltingRecipes;
+import com.gab0521.throwingdiscbackport.util.DiscDecoder;
 import com.gab0521.throwingdiscbackport.util.IHasModel;
 import com.gab0521.throwingdiscbackport.init.ModItems;
 import net.minecraft.block.Block;
@@ -21,34 +22,29 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.ArrayList;
+
 @Mod.EventBusSubscriber
 public class RegistryHandler {
 
     public static void preInitRegistries() {
+        ModItems.registerItems();
         ModEntities.registerEntities();
         RenderHandler.registerEntityRenders();
     }
 
     public static void initRegistries() {
         SmeltingRecipes.init();
-        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.IRON_THROWING_DISC, new IronDiscDispenser() {
-            @Override
-            protected IProjectile getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
-                return null;
-            }
-        });
-        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.GOLD_THROWING_DISC, new GoldDiscDispenser() {
-            @Override
-            protected IProjectile getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
-                return null;
-            }
-        });
-        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.DIAMOND_THROWING_DISC, new DiamondDiscDispenser() {
-            @Override
-            protected IProjectile getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
-                return null;
-            }
-        });
+        ArrayList<CustomDiscAttributes> decoded_discs_list = DiscDecoder.decode_discs();
+        for (int i = 0; i < decoded_discs_list.size(); i++) {
+            CustomDiscAttributes attributes = decoded_discs_list.get(i);
+            BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ModItems.DISCS_MAP.get(attributes.getMaterial().toUpperCase()+"_THROWING_DISC"), new DiscDispenser() {
+                @Override
+                protected IProjectile getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+                    return null;
+                }
+            });
+        }
     }
 
     public static void postInitRegistries() {

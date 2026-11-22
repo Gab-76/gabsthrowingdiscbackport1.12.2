@@ -1,0 +1,303 @@
+{
+  "parent": "throwingdiscbackport:adventure/monsters_diamond_disc",
+  "display": {
+    "title": {
+      "translate": "advancements.adventure.monsters_diamond_disc.title"
+    },
+    "description": {
+      "translate": "advancements.adventure.monsters_diamond_disc.description"
+    },
+    "icon": {
+      "item": "throwingdiscbackport:diamond_throwing_disc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "cave_spider": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "cave_spider"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "spider": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "spider"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "zombie_pigman": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "zombie_pigman"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "blaze": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "blaze"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "creeper": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "creeper"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "evoker": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "evocation_illager"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "ghast": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ghast"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "guardian": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "guardian"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "husk": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "husk"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "magma_cube": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "magma_cube"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "shulker": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "shulker"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "silverfish": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "silverfish"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "skeleton": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "skeleton"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "slime": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "slime"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "stray": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "stray"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "vindicator": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "vindication_illager"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "witch": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "witch"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "wither_skeleton": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "wither_skeleton"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "zombie": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "zombie"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    },
+    "zombie_villager": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "zombie_villager"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"diamond\"}"
+          }
+        }
+      }
+    }
+  },
+  "rewards": {
+    "experience": 20
+  }
+}

@@ -2,13 +2,13 @@
   "parent": "minecraft:adventure/kill_a_mob",
   "display": {
     "title": {
-      "translate": "advancements.adventure.monsters_diamond_disc.title"
+      "translate": "advancements.adventure.monsters_gold_disc.title"
     },
     "description": {
-      "translate": "advancements.adventure.monsters_diamond_disc.description"
+      "translate": "advancements.adventure.monsters_gold_disc.description"
     },
     "icon": {
-      "item": "throwingdiscbackport:diamond_throwing_disc"
+      "item": "throwingdiscbackport:gold_throwing_disc"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,17 +16,311 @@
     "hidden": false
   },
   "criteria": {
-    "Disc": {
+    "cave_spider": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
+        "entity": {
+          "type": "cave_spider"
+        },
         "killing_blow": {
           "direct_entity": {
-            "type": "throwingdiscbackport:diamond_throwing_disc"
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "spider": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "spider"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "zombie_pigman": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "zombie_pigman"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "blaze": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "blaze"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "creeper": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "creeper"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "evoker": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "evocation_illager"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "ghast": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ghast"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "guardian": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "guardian"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "husk": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "husk"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "magma_cube": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "magma_cube"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "shulker": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "shulker"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "silverfish": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "silverfish"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "skeleton": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "skeleton"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "slime": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "slime"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "stray": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "stray"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "vindicator": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "vindication_illager"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "witch": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "witch"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "wither_skeleton": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "wither_skeleton"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "zombie": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "zombie"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
+          }
+        }
+      }
+    },
+    "zombie_villager": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "zombie_villager"
+        },
+        "killing_blow": {
+          "direct_entity": {
+            "type": "throwingdiscbackport:throwing_disc",
+            "nbt": "{Variant:\"gold\"}"
           }
         }
       }
     }
   },
+  "requirements": [
+    [
+      "cave_spider",
+      "spider",
+      "zombie_pigman",
+      "blaze",
+      "creeper",
+      "evoker",
+      "ghast",
+      "guardian",
+      "husk",
+      "magma_cube",
+      "shulker",
+      "silverfish",
+      "skeleton",
+      "slime",
+      "stray",
+      "vindicator",
+      "witch",
+      "wither_skeleton",
+      "zombie",
+      "zombie_villager"
+    ]
+  ],
   "rewards": {
     "experience": 20
   }

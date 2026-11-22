@@ -1,11 +1,11 @@
 item.iron_throwing_disc.name=Iron Throwing Disc
 item.gold_throwing_disc.name=Golden Throwing Disc
 item.diamond_throwing_disc.name=Diamond Throwing Disc
-entity.iron_throwing_disc.name=Iron Throwing Disc
-entity.gold_throwing_disc.name=Golden Throwing Disc
-entity.diamond_throwing_disc.name=Diamond Throwing Disc
 item.tooltip.whenthrown.name=When Thrown:
-item.tooltip.throwntime.name=1 Second Flight Time (+0.5 seconds each bounce until 5 bounces):
+item.tooltip.throwntime.name= Seconds Flight Time (+0.5 seconds each bounce until 5 bounces):
 item.tooltip.throwndamage.name=Attack Damage
+throwingdiscbackport.general.discs=Configurable Discs
 advancements.adventure.monsters_diamond_disc.title=Monsters' Diamond Disc
-advancements.adventure.monsters_diamond_disc.description=Kill an entity by throwing a diamond throwing disc.
+advancements.adventure.monsters_diamond_disc.description=Kill one of every hostile monster by throwing a diamond throwing disc.
+advancements.adventure.monsters_gold_disc.title=Monsters' Golden Disc
+advancements.adventure.monsters_gold_disc.description=Kill an hostile monster by throwing a golden throwing disc.
